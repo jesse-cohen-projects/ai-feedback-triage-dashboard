@@ -563,6 +563,19 @@ select {
   .sidebar {
     position: static;
     height: auto;
+    gap: 18px;
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nav-item {
+    text-align: center;
+  }
+
+  .sidebar-note {
+    margin-top: 0;
   }
 
   .metric-grid,
@@ -580,13 +593,128 @@ select {
 }
 
 @media (max-width: 640px) {
+  body {
+    min-width: 0;
+  }
+
   .sidebar,
   .workspace {
-    padding: 18px;
+    padding: 14px;
+  }
+
+  .sidebar {
+    gap: 14px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  h2 {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
+  h3 {
+    line-height: 1.25;
+  }
+
+  .nav-list {
+    gap: 6px;
+  }
+
+  .nav-item {
+    padding: 10px 8px;
+  }
+
+  .sidebar-note {
+    padding: 12px;
   }
 
   .topbar {
     align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sticky-analytics {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    margin: 0;
+    padding: 8px 0;
+    background: rgba(246, 247, 244, 0.97);
+    backdrop-filter: blur(8px);
+    transition: padding 160ms ease;
+  }
+
+  .metric,
+  .panel {
+    box-shadow: none;
+  }
+
+  .metric,
+  .panel,
+  .feedback-card,
+  .opportunity-card,
+  .theme-card {
+    padding: 12px;
+  }
+
+  .metric {
+    transition: padding 160ms ease;
+  }
+
+  .metric strong {
+    font-size: 1.05rem;
+    transition: font-size 160ms ease, margin-top 160ms ease;
+  }
+
+  .metric span,
+  .metric strong small {
+    transition: font-size 160ms ease;
+  }
+
+  .is-scrolled .sticky-analytics {
+    padding: 6px 0;
+  }
+
+  .is-scrolled .sticky-analytics .metric {
+    padding: 8px 10px;
+  }
+
+  .is-scrolled .sticky-analytics .metric span {
+    font-size: 0.72rem;
+  }
+
+  .is-scrolled .sticky-analytics .metric strong {
+    margin-top: 4px;
+    font-size: 0.92rem;
+  }
+
+  .is-scrolled .sticky-analytics .metric strong small {
+    font-size: 0.7rem;
+  }
+
+  .is-scrolled .formula-row {
+    display: none;
+  }
+
+  .formula-row,
+  .heading-with-help {
+    max-width: 100%;
+  }
+
+  .formula-note {
+    line-height: 1.35;
+  }
+
+  .tooltip {
+    width: min(320px, calc(100vw - 28px));
+  }
+
+  .section-heading {
+    align-items: flex-start;
     flex-direction: column;
   }
 
@@ -602,5 +730,19 @@ select {
   .theme-list,
   .score-grid {
     grid-template-columns: 1fr;
+  }
+
+  .view-stack,
+  .view-section {
+    min-height: 0;
+  }
+
+  .feedback-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tag-row {
+    align-items: flex-start;
   }
 }

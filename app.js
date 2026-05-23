@@ -466,6 +466,10 @@ function initialize() {
     elements.aiBrief.textContent = `AI brief: ${items.length} visible feedback items include ${urgent} high-urgency signals. ${theme} is the strongest current theme and should be evaluated against customer impact, revenue relevance, confidence, and effort.`;
   });
 
+  window.addEventListener("scroll", () => {
+    document.body.classList.toggle("is-scrolled", window.scrollY > 96);
+  }, { passive: true });
+
   render();
 }
 
