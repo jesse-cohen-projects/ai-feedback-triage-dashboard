@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7 - Mobile Triage Flow
+
+- Improved mobile responsiveness for the public demo.
+- Added sticky handoff so analytics context gives way to compact filters during feedback review.
+- Moved selected signal details inline within feedback cards on mobile.
+- Improved mobile navigation so Themes and Roadmap jump directly to the active section.
+- Added mobile bottom spacing so the Roadmap section can scroll into a readable position.
+
 ## v0.6 - UX Polish And Public Readiness
 
 - Improved layout stability so shared dashboard elements feel less jumpy when switching between Inbox, Themes, and Roadmap.
