@@ -108,6 +108,7 @@ const feedback = [
 const state = {
   selectedId: feedback[0].id,
   activeView: "inbox",
+  filterStickPoint: 0,
   filters: {
     source: "all",
     sentiment: "all",
@@ -123,6 +124,7 @@ const elements = {
   pmLensCopy: document.querySelector("#pmLensCopy"),
   themeList: document.querySelector("#themeList"),
   opportunityList: document.querySelector("#opportunityList"),
+  filters: document.querySelector(".filters"),
   resultCount: document.querySelector("#resultCount"),
   visibleCount: document.querySelector("#visibleCount"),
   highestPriorityTheme: document.querySelector("#highestPriorityTheme"),
@@ -222,7 +224,28 @@ function renderFeedback(items) {
         <span class="tag ${item.urgency}">${titleCase(item.urgency)} urgency</span>
         <span class="tag theme">${item.theme}</span>
         <span class="priority-score">Priority ${priorityScore(item)}</span>
+        <span class="view-signal-cue">${item.id === state.selectedId ? "Signal open" : "View signal"}</span>
       </div>
+      ${item.id === state.selectedId ? `
+        <div class="mobile-signal-detail">
+          <strong>Selected signal</strong>
+          <dl class="mobile-score-grid">
+            <div>
+              <dt>Impact</dt>
+              <dd>${item.impact}</dd>
+            </div>
+            <div>
+              <dt>Confidence</dt>
+              <dd>${item.confidence}</dd>
+            </div>
+            <div>
+              <dt>Effort</dt>
+              <dd>${item.effort}</dd>
+            </div>
+          </dl>
+          <p>${item.summary}</p>
+        </div>
+      ` : ""}
     `;
     card.addEventListener("click", () => selectFeedback(item.id));
     card.addEventListener("keydown", (event) => {
@@ -408,6 +431,10 @@ function switchView(view) {
   };
 
   state.activeView = view;
+  document.body.classList.toggle("non-inbox-view", view !== "inbox");
+  if (view !== "inbox") {
+    document.body.classList.add("filters-active");
+  }
   elements.pmLensCopy.textContent = lensCopy[view] || lensCopy.inbox;
   elements.navItems.forEach((item) => {
     const isActive = item.dataset.view === view;
@@ -417,6 +444,29 @@ function switchView(view) {
   elements.viewSections.forEach((section) => {
     section.classList.toggle("hidden", section.dataset.section !== view);
   });
+}
+
+function jumpToMobileWorkArea(view) {
+  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+  if (!isMobile || view === "inbox") {
+    return;
+  }
+
+  const jump = () => {
+    document.body.classList.add("filters-active");
+    const activeSection = document.querySelector(`.view-section[data-section="${view}"]`);
+    const filterHeight = elements.filters.offsetHeight;
+    const top = activeSection.getBoundingClientRect().top + window.scrollY - filterHeight - 12;
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+  };
+
+  requestAnimationFrame(() => requestAnimationFrame(jump));
+  window.setTimeout(jump, 80);
+}
+
+function updateFilterStickPoint() {
+  const analyticsHeight = document.querySelector(".sticky-analytics")?.offsetHeight || 0;
+  state.filterStickPoint = elements.filters.offsetTop - analyticsHeight;
 }
 
 function selectFeedback(id) {
@@ -433,6 +483,7 @@ function render() {
   renderThemes(items);
   renderOpportunities(items);
   switchView(state.activeView);
+  updateFilterStickPoint();
 }
 
 function initialize() {
@@ -455,7 +506,9 @@ function initialize() {
 
   elements.navItems.forEach((item) => {
     item.addEventListener("click", () => {
-      switchView(item.dataset.view);
+      const view = item.dataset.view;
+      switchView(view);
+      jumpToMobileWorkArea(view);
     });
   });
 
@@ -466,8 +519,19 @@ function initialize() {
     elements.aiBrief.textContent = `AI brief: ${items.length} visible feedback items include ${urgent} high-urgency signals. ${theme} is the strongest current theme and should be evaluated against customer impact, revenue relevance, confidence, and effort.`;
   });
 
+  window.addEventListener("resize", updateFilterStickPoint);
+
   window.addEventListener("scroll", () => {
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const shouldActivateFilters = isMobile && window.scrollY >= state.filterStickPoint;
+    const shouldReleaseFilters = (!isMobile || window.scrollY < state.filterStickPoint - 180) && state.activeView === "inbox";
     document.body.classList.toggle("is-scrolled", window.scrollY > 96);
+    if (shouldActivateFilters) {
+      document.body.classList.add("filters-active");
+    }
+    if (shouldReleaseFilters) {
+      document.body.classList.remove("filters-active");
+    }
   }, { passive: true });
 
   render();

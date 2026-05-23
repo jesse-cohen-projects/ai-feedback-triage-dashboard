@@ -413,6 +413,10 @@ select {
   border-color: var(--accent);
 }
 
+.mobile-signal-detail {
+  display: none;
+}
+
 .feedback-meta,
 .tag-row {
   display: flex;
@@ -471,6 +475,16 @@ select {
 .priority-score {
   background: var(--sidebar);
   color: #ffffff;
+}
+
+.view-signal-cue {
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: #ffffff;
+  color: var(--accent-dark);
+  padding: 4px 9px;
+  font-size: 0.78rem;
+  font-weight: 850;
 }
 
 .quote {
@@ -714,6 +728,35 @@ select {
     display: none;
   }
 
+  .filters-active .sticky-analytics,
+  .non-inbox-view .sticky-analytics {
+    display: none;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .filters {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin: 0 -14px;
+    padding: 8px 14px;
+    background: rgba(246, 247, 244, 0.98);
+    backdrop-filter: blur(8px);
+  }
+
+  .filters label {
+    gap: 4px;
+    font-size: 0.72rem;
+  }
+
+  .filters select {
+    min-height: 36px;
+  }
+
   .formula-row,
   .heading-with-help {
     max-width: 100%;
@@ -746,9 +789,22 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .filters-active .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
   .view-stack,
   .view-section {
     min-height: 0;
+  }
+
+  .view-stack {
+    padding-bottom: 65vh;
+  }
+
+  .detail-panel {
+    display: none;
   }
 
   .feedback-meta {
@@ -758,5 +814,48 @@ select {
 
   .tag-row {
     align-items: flex-start;
+  }
+
+  .mobile-signal-detail {
+    display: block;
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    background: #eef8f6;
+    padding: 10px;
+  }
+
+  .mobile-signal-detail strong {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .mobile-signal-detail p {
+    margin-bottom: 0;
+    color: #21443f;
+    line-height: 1.45;
+  }
+
+  .mobile-score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0 0 10px;
+  }
+
+  .mobile-score-grid div {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #ffffff;
+    padding: 8px;
+  }
+
+  .mobile-score-grid dt {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+
+  .mobile-score-grid dd {
+    margin: 3px 0 0;
+    font-weight: 850;
   }
 }
