@@ -2,6 +2,10 @@
 
 A product management portfolio prototype that uses AI-assisted feedback triage to turn scattered customer comments into themes, urgency signals, prioritization inputs, and a decision brief.
 
+## Live Demo
+
+[Open the dashboard](https://jesse-cohen-projects.github.io/ai-feedback-triage-dashboard/)
+
 ## Overview
 
 Product managers receive feedback from sales calls, support tickets, user interviews, app reviews, and internal stakeholders. The hard part is not collecting feedback; it is turning messy input into a clear product signal.
