@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Feedback Triage Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Workspace navigation">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div>
+            <p class="eyebrow">Prototype</p>
+            <h1>Feedback Triage</h1>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Primary">
+          <button class="nav-item active" type="button" data-view="inbox">Inbox</button>
+          <button class="nav-item" type="button" data-view="themes">Themes</button>
+          <button class="nav-item" type="button" data-view="roadmap">Roadmap</button>
+        </nav>
+
+        <section class="sidebar-note">
+          <p class="eyebrow">PM Focus</p>
+          <p id="pmLensCopy">Review raw signals before jumping to conclusions.</p>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Jesseco Analytics</p>
+            <h2>AI Feedback Triage Dashboard</h2>
+          </div>
+          <button class="primary-button" type="button" id="generateSummary">Generate AI brief</button>
+        </header>
+
+        <section class="sticky-analytics" aria-label="Feedback analytics">
+          <div class="metric-grid" aria-label="Feedback metrics">
+            <article class="metric">
+              <span>Visible items</span>
+              <strong id="visibleCount">0</strong>
+            </article>
+            <article class="metric">
+              <span>Highest priority theme</span>
+              <strong id="highestPriorityTheme">-</strong>
+            </article>
+            <article class="metric">
+              <span>Most urgent theme</span>
+              <strong id="mostUrgentTheme">-</strong>
+            </article>
+            <article class="metric">
+              <span>Highest count theme</span>
+              <strong id="highestCountTheme">-</strong>
+            </article>
+          </div>
+
+          <div class="formula-row">
+            <p class="formula-note">Priority = impact x confidence / effort</p>
+            <button class="help-trigger" type="button" aria-describedby="scoringHelp">?</button>
+            <div class="tooltip" id="scoringHelp" role="tooltip">
+              <strong>Scoring model</strong>
+              <p>Feedback enters from support tickets, sales calls, interviews, app reviews, or CSV imports. Impact and confidence are PM-assessed; effort should be engineering-estimated.</p>
+              <p>Priority is a discussion aid, not an automatic roadmap decision.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel decision-brief" aria-label="Decision brief">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Decision Brief</p>
+              <div class="heading-with-help">
+                <h3 id="briefTitle">Recommended next investigation</h3>
+                <button class="help-trigger" type="button" aria-describedby="decisionHelp">?</button>
+                <div class="tooltip" id="decisionHelp" role="tooltip">
+                  <strong>Decision brief</strong>
+                  <p>A short PM summary that turns feedback analysis into a recommended next investigation.</p>
+                  <p>It should explain why now, what evidence supports it, what is still unknown, and who should be involved.</p>
+                </div>
+              </div>
+            </div>
+            <span id="briefPriority">Priority -</span>
+          </div>
+          <div class="brief-grid">
+            <div>
+              <strong>Why now</strong>
+              <p id="briefWhy">Filter feedback to generate a recommendation.</p>
+            </div>
+            <div>
+              <strong>Evidence</strong>
+              <p id="briefEvidence">No evidence selected yet.</p>
+            </div>
+            <div>
+              <strong>Open questions</strong>
+              <p id="briefQuestions">No questions selected yet.</p>
+            </div>
+            <div>
+              <strong>Partner</strong>
+              <p id="briefPartner">Product, design, and engineering.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="filters" aria-label="Feedback filters">
+          <label>
+            Source
+            <select id="sourceFilter">
+              <option value="all">All sources</option>
+            </select>
+          </label>
+          <label>
+            Sentiment
+            <select id="sentimentFilter">
+              <option value="all">All sentiment</option>
+            </select>
+          </label>
+          <label>
+            Urgency
+            <select id="urgencyFilter">
+              <option value="all">All urgency</option>
+            </select>
+          </label>
+          <label>
+            Theme
+            <select id="themeFilter">
+              <option value="all">All themes</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="view-stack">
+          <section class="content-grid view-section" data-section="inbox">
+            <section class="panel" aria-label="Feedback inbox">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Inbox</p>
+                  <h3>Customer Feedback</h3>
+                </div>
+                <span id="resultCount">0 items</span>
+              </div>
+              <div class="feedback-list" id="feedbackList"></div>
+            </section>
+
+            <aside class="panel detail-panel" aria-label="Selected feedback details">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Selected Signal</p>
+                  <h3 id="detailCustomer">Choose an item</h3>
+                </div>
+              </div>
+              <p class="quote" id="detailQuote">Select feedback to inspect the signal, priority, and summary.</p>
+              <dl class="score-grid">
+                <div>
+                  <dt>Impact</dt>
+                  <dd id="detailImpact">-</dd>
+                </div>
+                <div>
+                  <dt>Confidence</dt>
+                  <dd id="detailConfidence">-</dd>
+                </div>
+                <div>
+                  <dt>Effort</dt>
+                  <dd id="detailEffort">-</dd>
+                </div>
+              </dl>
+              <div class="ai-brief" id="aiBrief">AI-style summary appears here.</div>
+            </aside>
+          </section>
+
+          <section class="panel view-section hidden" data-section="themes" aria-label="Theme summaries">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Themes</p>
+                <h3>AI-Grouped Feedback Themes</h3>
+              </div>
+            </div>
+            <div class="theme-list" id="themeList"></div>
+          </section>
+
+          <section class="panel opportunity-panel view-section hidden" data-section="roadmap" aria-label="Roadmap opportunities">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Roadmap</p>
+                <h3>Candidate Opportunities</h3>
+              </div>
+            </div>
+            <div class="opportunity-list" id="opportunityList"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
