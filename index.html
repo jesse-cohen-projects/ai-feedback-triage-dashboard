@@ -38,6 +38,16 @@
           <button class="primary-button" type="button" id="generateSummary">Generate AI brief</button>
         </header>
 
+        <section class="panel ai-brief-popout hidden" id="aiBriefPopout" aria-live="polite">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">AI Brief</p>
+              <h3>Current feedback summary</h3>
+            </div>
+          </div>
+          <p id="aiBriefPopoutCopy">Generate a brief to summarize the currently visible feedback.</p>
+        </section>
+
         <section class="sticky-analytics" aria-label="Feedback analytics">
           <div class="metric-grid" aria-label="Feedback metrics">
             <article class="metric">
@@ -79,7 +89,7 @@
                 <div class="tooltip" id="decisionHelp" role="tooltip">
                   <strong>Decision brief</strong>
                   <p>A short PM summary that turns feedback analysis into a recommended next investigation.</p>
-                  <p>It should explain why now, what evidence supports it, what is still unknown, and who should be involved.</p>
+                  <p>It explains why now, what evidence supports it, what is still unknown, and who should be involved.</p>
                 </div>
               </div>
             </div>

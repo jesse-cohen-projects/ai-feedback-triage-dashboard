@@ -142,6 +142,8 @@ const elements = {
   detailConfidence: document.querySelector("#detailConfidence"),
   detailEffort: document.querySelector("#detailEffort"),
   aiBrief: document.querySelector("#aiBrief"),
+  aiBriefPopout: document.querySelector("#aiBriefPopout"),
+  aiBriefPopoutCopy: document.querySelector("#aiBriefPopoutCopy"),
   generateSummary: document.querySelector("#generateSummary"),
   sourceFilter: document.querySelector("#sourceFilter"),
   sentimentFilter: document.querySelector("#sentimentFilter"),
@@ -516,7 +518,11 @@ function initialize() {
     const items = filteredFeedback();
     const urgent = items.filter((item) => item.urgency === "high").length;
     const theme = highestPriorityTheme(items)?.theme || "No theme";
-    elements.aiBrief.textContent = `AI brief: ${items.length} visible feedback items include ${urgent} high-urgency signals. ${theme} is the strongest current theme and should be evaluated against customer impact, revenue relevance, confidence, and effort.`;
+    elements.aiBriefPopoutCopy.textContent = `AI brief: ${items.length} visible feedback items include ${urgent} high-urgency signals. ${theme} is the strongest current theme and should be evaluated against customer impact, revenue relevance, confidence, and effort.`;
+    elements.aiBriefPopout.classList.toggle("hidden");
+    elements.generateSummary.textContent = elements.aiBriefPopout.classList.contains("hidden")
+      ? "Generate AI brief"
+      : "Hide AI brief";
   });
 
   window.addEventListener("resize", updateFilterStickPoint);

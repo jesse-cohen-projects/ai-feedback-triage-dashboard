@@ -345,6 +345,17 @@ h3 {
   line-height: 1.42;
 }
 
+.ai-brief-popout {
+  border-left: 4px solid var(--blue);
+  box-shadow: 0 12px 30px rgba(44, 95, 147, 0.12);
+}
+
+.ai-brief-popout p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .filters {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
